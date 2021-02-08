@@ -1,0 +1,21 @@
+<h1>Accounts</h1>
+
+{{#if errorOcurred}}
+	<p>Internal server error, try again later!</p>
+{{else}}
+	
+	{{#if accounts.length}}
+	
+		<p>There are {{accounts.length}} accounts.</p>
+		
+		<ul>
+		{{#each accounts}}
+			<li><a href="/account/{{id}}">{{username}}</a></li>
+		{{/each}}
+		</ul>
+		
+	{{else}}
+		<p>There are no accounts.</p>
+	{{/if}}
+	
+{{/if}}

@@ -1,15 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your title here</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-  </head>
 
-  <body>
-    <h1 class="title">Write the layout code in this file</h1>
-    {{{body}}}
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NextGenerationWeb</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+</head>
+
+<nav class="navbar is-fixed-top is-black" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_Green.png" alt="Bulma: Free, open source, and modern CSS framework based on Flexbox" width="112" height="35">
+    </a>
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-success" href="/signup">
+            <strong>Sign up</strong>
+          </a>
+          <a class="button is-light" href="/login">
+            Log in
+          </a>
+        </div>
+      </div>
+    </div>
+</nav>
+
+<body class="has-navbar-fixed-top has-background-dark" style="height: 100vh">
+  {{{body}}}
+</body>
 
 </html>

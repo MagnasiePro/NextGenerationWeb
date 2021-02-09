@@ -1,5 +1,7 @@
 <h1>Accounts</h1>
 
+{{log this}}
+
 {{#if errorOcurred}}
 	<p>Internal server error, try again later!</p>
 {{else}}
@@ -10,7 +12,7 @@
 		
 		<ul>
 		{{#each accounts}}
-			<li><a href="/account/{{id}}">{{username}}</a></li>
+			<li><a href="/accounts/{{id}}">{{username}}</a></li>
 		{{/each}}
 		</ul>
 		

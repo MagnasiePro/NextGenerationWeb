@@ -1,3 +1,14 @@
 <h1>Accounts</h1>
-{{log this}}
-{{account.username}}
+
+{{#if errorOcurred}}
+	<p>Internal server error, try again later!</p>
+{{else}}
+	{{#if account}}
+		
+		{{account.username}}
+		
+	{{else}}
+		<p>There are no accounts.</p>
+	{{/if}}
+	
+{{/if}}

@@ -18,10 +18,9 @@ exports.createAccount = function(username, password, callback){
 		if(error){
 			callback("Database error.")
 		}else{
-			callback(null, this.lastID)
 			console.log("Create new user with:" + username + " " + password + " " + this.lastID)
+			callback(null, this.lastID) 
 		}
-		
 	})
 	
 }

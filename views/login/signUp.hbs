@@ -1,30 +1,19 @@
 <div class="is-flex is-justify-content-center">
-    <div class="card" style="height: 50vh; width: 30vw">
+    <div class="card" style="width: 30vw">
         <header class="card-header">
             <p class="card-header-title">
                 Welcome new user !
             </p>
         </header>
-        <div class="card-content">
-            <div class="media">
-                <div class="media-left">
-                    <figure class="image is-48x48">
-                        <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                    </figure>
-                </div>
-                <div class="media-content">
-                    <p class="title is-4">John Smith</p>
-                    <p class="subtitle is-6">@johnsmith</p>
-                </div>
-            </div>
-
-            <div class="content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-                <a href="#">#css</a> <a href="#">#responsive</a>
-                <br>
-                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-            </div>
-        </div>
+        <form class="card-content is-flex is-justify-content-space-between is-flex-direction-column" method="POST"
+            action="/login/submit-registration" style="column-gap: 20px; padding: 5px 1em;">
+            <input class="input" name="username" type="username" placeholder="Username">
+            <input class="input" name="password" type="password" placeholder="Password">
+            <input class="input" name="passwordVerif" type="password" placeholder="Retype password">
+            <input type="submit" class="button is-success" style="padding-left: 3em; padding-right: 3em" />
+        </form>
+        <footer class="card-footer">
+            <a href="/login" class="card-footer-item">I already have an account</a>
+        </footer>
     </div>
 </div>

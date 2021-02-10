@@ -1,10 +1,22 @@
 const express = require('express')
 const expressHandlebars = require('express-handlebars')
+const expressSession = require('express-session')
+const SQLiteStore = require('connect-sqlite3')(expressSession)
 const bodyParser = require('body-parser')
 
 const app = express()
 
 const accountsRouter = require('./src/accountsRouter')
+const signRouter = require('./src/signRouter')
+
+app.use(expressSession({
+    secret: "ThisIsMySuperSecretPassword", //Promise you that it will not be this password for production
+    resave: false,
+	saveUninitialized: false,
+	store: new SQLiteStore({
+		db: "sqlite-database.db"
+	})
+  }))
 
 app.use(
 	express.static("public")
@@ -17,7 +29,6 @@ app.engine('hbs', expressHandlebars({
 }))
 
 app.get('/', function (request, response) {
-    // Render /views/home.hbs
     response.render("home.hbs")
 })
 
@@ -36,6 +47,8 @@ app.get('/login', function (request, response) {
 app.get('/signup', function (request, response) {
     response.render("./login/signUp.hbs")
 })
+
+app.use("/login", signRouter)
 
 app.use("/accounts", accountsRouter)
 

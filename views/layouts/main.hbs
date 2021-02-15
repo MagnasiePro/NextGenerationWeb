@@ -11,7 +11,8 @@
 <nav class="navbar is-fixed-top is-black" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" href="/">
-      <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_Green.png" alt="Bulma: Free, open source, and modern CSS framework based on Flexbox" width="112" height="35">
+      <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_Green.png"
+        alt="Bulma: Free, open source, and modern CSS framework based on Flexbox" width="112" height="35">
     </a>
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
       <span aria-hidden="true"></span>
@@ -20,17 +21,23 @@
     </a>
   </div>
   <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          <a class="button is-success" href="/signup">
-            <strong>Sign up</strong>
-          </a>
-          <a class="button is-light" href="/login">
-            Log in
-          </a>
-        </div>
+    <div class="navbar-item">
+      {{#if session.userID}}
+      <a class="button is-light" href="/logout">
+        Log Out
+      </a>
+      {{else}}
+      <div class="buttons">
+        <a class="button is-success" href="/signup">
+          <strong>Sign up</strong>
+        </a>
+        <a class="button is-light" href="/login">
+          Log in
+        </a>
       </div>
+      {{/if}}
     </div>
+  </div>
 </nav>
 
 <body class="has-navbar-fixed-top has-background-dark" style="height: 100vh">

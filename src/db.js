@@ -22,7 +22,20 @@ exports.createAccount = function(username, password, callback){
 			callback(null, this.lastID) 
 		}
 	})
-	
+}
+
+exports.loginAccount = function(username, callback){
+
+	const query = "SELECT * FROM accounts WHERE username = ?"
+	const values = [username]
+
+	db.get(query, values, function(error, account){
+		if(error){
+			callback("Database error.")
+		} else {
+			callback(null, account)
+		}
+	})
 }
 
 exports.getAccountById = function(accountId, callback){
@@ -89,5 +102,4 @@ exports.updateAccountById = function(newUsername, newPassword, accountId, callba
 		}
 		
 	})
-	
 }

@@ -13,10 +13,13 @@ app.use(expressSession({
     secret: "ThisIsMySuperSecretPassword", //Promise you that it will not be this password for production
     resave: false,
 	saveUninitialized: false,
-	store: new SQLiteStore({
-		db: "sqlite-database.db"
-	})
-  }))
+	cookie: { maxAge: 6000000 }
+}))
+
+app.use(function (req, res, next) {
+    res.locals.session = req.session;
+    next();
+});
 
 app.use(
 	express.static("public")

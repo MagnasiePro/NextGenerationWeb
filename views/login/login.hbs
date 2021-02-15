@@ -1,0 +1,18 @@
+<div class="is-flex is-justify-content-center">
+    <div class="card" style="width: 30vw">
+        <header class="card-header">
+            <p class="card-header-title">
+                Who are you !
+            </p>
+        </header>
+        <form class="card-content is-flex is-justify-content-space-between is-flex-direction-column" method="POST"
+            action="/login/submit-login" style="column-gap: 20px; padding: 5px 1em;">
+            <input class="input" name="username" type="username" placeholder="Username">
+            <input class="input" name="password" type="password" placeholder="Password">
+            <input type="submit" class="button is-success" style="padding-left: 3em; padding-right: 3em" />
+        </form>
+        <footer class="card-footer">
+            <a href="/signup" class="card-footer-item">Register</a>
+        </footer>
+    </div>
+</div>

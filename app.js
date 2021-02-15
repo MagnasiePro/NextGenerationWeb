@@ -51,6 +51,11 @@ app.get('/signup', function (request, response) {
     response.render("./login/signUp.hbs")
 })
 
+app.get('/logout', function (request, response) {
+    request.session.userID = undefined
+    response.redirect('/')
+})
+
 app.use("/login", signRouter)
 
 app.use("/accounts", accountsRouter)

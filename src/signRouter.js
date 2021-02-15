@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 
 const router = express.Router()
 
-router.post('/submit-registration', (req, res) => {
+router.post('/submit-registration', async (req, res) => {
     const data = req.body
 
     if (!data.username || !data.password) {
@@ -14,21 +14,28 @@ router.post('/submit-registration', (req, res) => {
         console.log("ERROR: invalid password verification")
         res.redirect("/signup")
     } else {
-        bcrypt.hash(req.body.password, 10).then((hash) => {
-            db.createAccount(data.username, hash, function (error, id) {
-                if (error) {
-                    // TODO: Handle error.
-                    console.log("ERROR: " + error)
-                } else {
-                    req.session.userID = id
-                    res.redirect("/")
-                }
-            })
-        });
+        db.checkAccountByUsername(data.username, function (error, account) {
+            if (account) {
+                console.log("ERROR: Account already exist")
+                res.redirect("/signup")
+            } else {
+                bcrypt.hash(req.body.password, 10).then((hash) => {
+                    db.createAccount(data.username, hash, function (error, id) {
+                        if (error) {
+                            // TODO: Handle error.
+                            console.log("ERROR: " + error)
+                        } else {
+                            req.session.userID = id
+                            res.redirect("/")
+                        }
+                    })
+                });
+            }
+        })
     }
 })
 
-router.post('/submit-login', (req, res) => {
+router.post('/submit-login', async (req, res) => {
     const data = req.body
 
     if (!data.username || !data.password) {

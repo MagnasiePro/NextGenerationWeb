@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 
 const router = express.Router()
 
-router.post('/submit-registration', async (req, res) => {
+router.post('/submit-registration', (req, res) => {
     const data = req.body
 
     if (!data.username || !data.password) {
@@ -25,6 +25,7 @@ router.post('/submit-registration', async (req, res) => {
                             // TODO: Handle error.
                             console.log("ERROR: " + error)
                         } else {
+                            console.log(id)
                             req.session.userID = id
                             res.redirect("/")
                         }
@@ -35,7 +36,7 @@ router.post('/submit-registration', async (req, res) => {
     }
 })
 
-router.post('/submit-login', async (req, res) => {
+router.post('/submit-login', (req, res) => {
     const data = req.body
 
     if (!data.username || !data.password) {

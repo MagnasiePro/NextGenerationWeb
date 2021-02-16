@@ -10,7 +10,7 @@ router.get('/', function (request, response) {
 		if(error){
 			// TODO: Handle error.
             console.log("ERROR: " + error)
-		}else{
+		} else {
 			const model = {
 				accounts: accounts
 			}

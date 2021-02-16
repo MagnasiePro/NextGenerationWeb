@@ -2,48 +2,72 @@ const sqlite = require('sqlite3')
 
 const db = new sqlite.Database("database.db")
 
-db.run(`
-	CREATE TABLE IF NOT EXISTS accounts(
-		id INTEGER PRIMARY KEY,
-		username TEXT,
-		password INTEGER
-	);
-	CREATE TABLE IF NOT EXISTS playlists(
-		id INTEGER PRIMARY KEY
-		owner TEXT
-		name TEXT
-	);
-	CREATE TABLE IF NOT EXISTS musics(
-		id INTEGER PRIMARY KEY
-		name TEXT
-		artist TEST
-	);
-	CREATE TABLE IF NOT EXISTS playlist_songs(
-		playlist_id INTEGER
-		song_id INTEGER
-	)`)
+db.run(`CREATE TABLE IF NOT EXISTS accounts(id INTEGER PRIMARY KEY, username TEXT, password INTEGER)`)
+
+db.run(`CREATE TABLE IF NOT EXISTS playlists(id INTEGER PRIMARY KEY, ownerID TEXT, name TEXT, private INTEGER)`)
+
+db.run(`CREATE TABLE IF NOT EXISTS songs(id INTEGER PRIMARY KEY, name TEXT, artist TEXT)`)
+
+db.run(`CREATE TABLE IF NOT EXISTS playlist_songs(playlist_id INTEGER, song_id INTEGER)`)
 
 exports.addMusic = function (name, artist, callback) {
-	const query = "INSTER INTO musics (name, artist) VALUES (?, ?)"
+	const query = "INSERT INTO songs (name, artist) VALUES (?, ?)"
 	const values = [name, artist]
 
 	db.run(query, values, function (error) {
 		if (error) {
 			callback(error)
 		} else {
-			console.log("Add new music: " + name + " - " + artist + " | id: " + this.lastID)
+			console.log("Add new song: " + name + " - " + artist + " | id: " + this.lastID)
 			callback(null, this.lastID)
 		}
 	})
 }
 
-exports.createAccount = function (username, password, callback) {
+exports.addSongToPlaylist = function (idPlaylist, idSong) {
+	const query = "INSERT INTO playlist_songs (playlist_id, song_id) VALUES (?, ?)"
+	const values = [idPlaylist, idSong]
 
+	db.run(query, values, function (error) {
+		if (error) {
+			callback(error)
+		} else {
+			callback(null)
+		}
+	})
+}
+
+exports.createPlaylist = function (ownerID, name, private, callback) {
+	const query = "INSERT INTO playlists (owner, name, private) VALUES (?, ?, ?)"
+	const values = [ownerID, name, private]
+
+	db.run(query, values, function (error) {
+		if (error) {
+			callback(error)
+		} else {
+			console.log("Create new playlist: " + name + " " + ownerID + " " + private + " " + this.lastID)
+			callback(null, this.lastID)
+		}
+	})
+}
+
+exports.getPlaylists = function (callback) {
+	const query = "SELECT * FROM playlists"
+
+	db.all(query, function (error, playlists) {
+		if (error) {
+			callback(error)
+		} else {
+			callback(null, playlists)
+		}
+	})
+}
+
+exports.createAccount = function (username, password, callback) {
 	const query = "INSERT INTO accounts (username, password) VALUES (?, ?)"
 	const values = [username, password]
 
 	db.run(query, values, function (error) {
-
 		if (error) {
 			callback(error)
 		} else {

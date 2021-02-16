@@ -9,8 +9,8 @@ router.post('/add-music', (req, res) => {
     if (!data.name || !data.artist) {
         console.log("ERROR: Missing arguments")
     } else {
-        db.addMusic(data.name, data.artist, function (error, id) {
-            
+        db.addSong(data.name, data.artist, function (error, id) {
+            res.redirect("/")
         })
     }
 })

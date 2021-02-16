@@ -8,12 +8,13 @@ const app = express()
 
 const accountsRouter = require('./src/accountsRouter')
 const signRouter = require('./src/signRouter')
+const playlistRouter = require('./src/playlistRouter')
 
 app.use(expressSession({
     secret: "ThisIsMySuperSecretPassword", //Promise you that it will not be this password for production
     resave: false,
 	saveUninitialized: false,
-	cookie: { maxAge: 6000000 }
+	cookie: { maxAge: 86400000 }
 }))
 
 app.use(function (req, res, next) {
@@ -55,6 +56,8 @@ app.get('/logout', function (request, response) {
     request.session.userID = undefined
     response.redirect('/')
 })
+
+app.use("/playlists", playlistRouter)
 
 app.use("/login", signRouter)
 

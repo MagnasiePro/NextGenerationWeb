@@ -1,0 +1,27 @@
+<div class="is-flex is-justify-content-center">
+    <div class="card" style="width: 30vw">
+        <header class="card-header">
+            <p class="card-header-title">
+                Create your new playlist together
+            </p>
+        </header>
+        <form class="card-content is-flex is-justify-content-space-between is-flex-direction-column" method="POST"
+            action="/playlists/submit-playlist" style="column-gap: 20px; padding: 5px 1em;">
+            <div class="control">
+                <input class="input" name="name" type="text" placeholder="Name of the playlist">
+            </div>
+            <div class="control">
+                <label class="radio" name="isPrivate">
+                    <input type="radio" name="isPrivate" value="1" checked>
+                    Private
+                </label>
+                <label class="radio">
+                    <input type="radio" name="isPrivate" value="0">
+                    Public
+                </label>
+            </div>
+            <input type="submit" class="button is-success" style="padding-left: 3em; padding-right: 3em" />
+        </form>
+    </div>
+</div>
+</div>

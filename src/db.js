@@ -40,11 +40,10 @@ exports.addSongToPlaylist = function (idPlaylist, idSong) {
 exports.getPlaylistsById = function (idPlaylist, callback) {
 	const query = "SELECT * FROM playlists WHERE id = ?"
 
-	db.all(query, idPlaylist, function (error, playlist) {
+	db.get(query, idPlaylist, function (error, playlist) {
 		if (error) {
 			console.log(error)
 		} else {
-			console.log("Get playlist: " + playlist)
 			callback(null, playlist)
 		}
 	})
@@ -81,17 +80,16 @@ exports.createPlaylist = function (ownerID, name, private, callback) {
 exports.getSongs = function (callback) {
 	const query = "SELECT * FROM songs"
 
-	db.all(query, function (error, playlists) {
+	db.all(query, function (error, songs) {
 		if (error) {
 			callback(error)
 		} else {
-			callback(null, playlists)
+			callback(null, songs)
 		}
 	})
 }
 
 exports.getPlaylists = function (userID, callback) {
-//	const query = "SELECT * FROM playlists"
 	const query = "SELECT * FROM playlists WHERE private = 0 OR ownerID = ?"
 	const value = userID
 

@@ -21,8 +21,8 @@ router.get('/:id/songs', (req, res) => {
     const id = req.params.id
 
     db.getPlaylistsById(id, function (error, playlist) {
-        if (playlist.private == 1 && playlist.ownerID != req.session.userID) {
-            res.render("/playlists")
+        if (typeof playlist === 'undefined' || (playlist.private == 1 && playlist.ownerID != req.session.userID)) {
+            res.redirect("/playlists")
             return
         } else {
             db.getSongsFromPlaylist(id, function (error, songsID) {
@@ -30,12 +30,11 @@ router.get('/:id/songs', (req, res) => {
                     callback(error)
                 } else {
                     console.log("Songs in playlists n°" + id + ": " + songsID)
-        
                     const model = {
                         playlist: playlist,
                         songsID: songsID
                     }
-                    res.render("songs.hbs", model)
+                    res.render("songsPlaylist.hbs", model)
                 }
             })
         }

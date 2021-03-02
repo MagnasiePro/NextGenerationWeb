@@ -4,14 +4,14 @@ const db = require('./db')
 const router = express.Router()
 
 router.get("/", (req, res) => {
-    db.getPlaylists(function (error, playlists) {
+    db.getPlaylists(req.session.userID, function (error, playlists) {
         if (error) {
             console.log(error)
         } else {
             const model = {
                 playlists: playlists
             }
-            res.render("playlist.hbs", model)
+            res.render("playlists.hbs", model)
         }
     })
 })

@@ -20,22 +20,32 @@
       <span aria-hidden="true"></span>
     </a>
   </div>
-  <div class="navbar-end">
-    <div class="navbar-item">
-      {{#if session.userID}}
-      <a class="button is-light" href="/logout">
-        Log Out
+  <div class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" href="/">
+        Home
       </a>
-      {{else}}
-      <div class="buttons">
-        <a class="button is-success" href="/signup">
-          <strong>Sign up</strong>
+      <a class="navbar-item" href="/playlists">
+        Playlist
+      </a>
+    </div>
+    <div class="navbar-end">
+      <div class="navbar-item">
+        {{#if session.userID}}
+        <a class="button is-light" href="/logout">
+          Log Out
         </a>
-        <a class="button is-light" href="/login">
-          Log in
-        </a>
+        {{else}}
+        <div class="buttons">
+          <a class="button is-success" href="/signup">
+            <strong>Sign up</strong>
+          </a>
+          <a class="button is-light" href="/login">
+            Log in
+          </a>
+        </div>
+        {{/if}}
       </div>
-      {{/if}}
     </div>
   </div>
 </nav>

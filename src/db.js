@@ -10,7 +10,7 @@ db.run(`CREATE TABLE IF NOT EXISTS songs(id INTEGER PRIMARY KEY, name TEXT, arti
 
 db.run(`CREATE TABLE IF NOT EXISTS playlist_songs(playlist_id INTEGER, song_id INTEGER)`)
 
-exports.addMusic = function (name, artist, callback) {
+exports.addSong = function (name, artist, callback) {
 	const query = "INSERT INTO songs (name, artist) VALUES (?, ?)"
 	const values = [name, artist]
 
@@ -37,8 +37,22 @@ exports.addSongToPlaylist = function (idPlaylist, idSong) {
 	})
 }
 
+exports.getSongsFromPlaylist = function (idPlaylist) {
+	const query = "SELECT song_id FROM playlist_songs WHERE playlist_id = VALUE ?"
+	const value = idPlaylist
+
+	db.all(query, value, function (error, songsID){
+		if (error) {
+			callback(error)
+		} else {
+			console.log("Songs in playlist: " + songsID)
+			callback(null, songsID)
+		}
+	})
+}
+
 exports.createPlaylist = function (ownerID, name, private, callback) {
-	const query = "INSERT INTO playlists (owner, name, private) VALUES (?, ?, ?)"
+	const query = "INSERT INTO playlists (ownerID, name, private) VALUES (?, ?, ?)"
 	const values = [ownerID, name, private]
 
 	db.run(query, values, function (error) {
@@ -51,10 +65,25 @@ exports.createPlaylist = function (ownerID, name, private, callback) {
 	})
 }
 
-exports.getPlaylists = function (callback) {
-	const query = "SELECT * FROM playlists"
+exports.getSongs = function (callback) {
+	const query = "SELECT * FROM songs"
 
 	db.all(query, function (error, playlists) {
+		if (error) {
+			callback(error)
+		} else {
+			callback(null, playlists)
+		}
+	})
+}
+
+exports.getPlaylists = function (userID, callback) {
+//	const query = "SELECT * FROM playlists"
+	const query = "SELECT * FROM playlists WHERE private = 0 OR ownerID = ?"
+	const value = userID
+
+	db.all(query, value, function (error, playlists) {
+		console.log("UserID: " + value)
 		if (error) {
 			callback(error)
 		} else {

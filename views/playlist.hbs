@@ -2,31 +2,8 @@
 
 {{log this}}
 
-<a class="button is-active" href="/playlists/newPlaylist">New Playlist</a>
-
 <div class="columns is-1 is-multiline is-variable" style="margin: 1em 0;">
     {{#each playlists}}
-    <div class="column is-3">
-        <div class="card" style="background-color: black;">
-            <header class="card-header" style="color:white">
-                <div class="media">
-                    <div class="media-left">
-                        <figure class="image is-48x48">
-                            <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                        </figure>
-                    </div>
-                    <div class="media-content">
-                        <p class="title is-4">{{name}}</p>
-                        <p class="subtitle is-6">{{owner}}</p>
-                    </div>
-                </div>
-            </header>
-            <div class="card-content" style="color:lightgrey">
-                <div class="content" style="color:;">
-                    {{private}}
-                </div>
-            </div>
-        </div>
-    </div>
+
     {{/each}}
 </div>

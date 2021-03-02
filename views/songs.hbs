@@ -1,0 +1,38 @@
+{{log this}}
+
+<div class="is-flex is-justify-content-center columns is-1 is-multiline is-variable" style="margin: 1em 0;">
+    <article class="is-flex is-justify-content-space-between is-flex-direction-column panel is-success"
+        style="width:50vw">
+        <p class="panel-heading">
+            Songs
+        </p>
+        <div class="panel-block">
+            <p class="control has-icons-left">
+                <input class="input is-success" type="text" placeholder="Search">
+                <span class="icon is-left">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                </span>
+            </p>
+        </div>
+        <table class="table is-striped">
+            <thead>
+                <tr style="background-color: black;">
+                    <th>TITLE</th>
+                    <th>ARTIST</th>
+                    <th>ALBUM</th>
+                    <th>LENGTH</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each songs}}
+                <tr>
+                    <td>{{Track_Name}}</td>
+                    <td>{{Arists_Name}}</td>
+                    <td>{{Album_Name}}</td>
+                    <td>{{Length}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </article>
+</div>

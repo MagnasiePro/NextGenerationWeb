@@ -14,3 +14,14 @@ router.post('/add-music', (req, res) => {
         })
     }
 })
+
+router.get('/', (req, res) => {
+    db.getSongs(function (error, songs) {
+        const model = {
+            songs: songs
+        } 
+        res.render('songs.hbs', model)
+    })
+})
+
+module.exports = router

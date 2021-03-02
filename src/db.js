@@ -37,8 +37,21 @@ exports.addSongToPlaylist = function (idPlaylist, idSong) {
 	})
 }
 
-exports.getSongsFromPlaylist = function (idPlaylist) {
-	const query = "SELECT song_id FROM playlist_songs WHERE playlist_id = VALUE ?"
+exports.getPlaylistsById = function (idPlaylist, callback) {
+	const query = "SELECT * FROM playlists WHERE id = ?"
+
+	db.all(query, idPlaylist, function (error, playlist) {
+		if (error) {
+			console.log(error)
+		} else {
+			console.log("Get playlist: " + playlist)
+			callback(null, playlist)
+		}
+	})
+}
+
+exports.getSongsFromPlaylist = function (idPlaylist, callback) {
+	const query = "SELECT song_id FROM playlist_songs WHERE playlist_id = ?"
 	const value = idPlaylist
 
 	db.all(query, value, function (error, songsID){

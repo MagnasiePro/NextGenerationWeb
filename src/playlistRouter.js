@@ -1,3 +1,4 @@
+const { request } = require('express')
 const express = require('express')
 const db = require('./db')
 
@@ -12,6 +13,31 @@ router.get("/", (req, res) => {
                 playlists: playlists
             }
             res.render("playlists.hbs", model)
+        }
+    })
+})
+
+router.get('/:id/songs', (req, res) => {
+    const id = req.params.id
+
+    db.getPlaylistsById(id, function (error, playlist) {
+        if (playlist.private == 1 && playlist.ownerID != req.session.userID) {
+            res.render("/playlists")
+            return
+        } else {
+            db.getSongsFromPlaylist(id, function (error, songsID) {
+                if (error) {
+                    callback(error)
+                } else {
+                    console.log("Songs in playlists n°" + id + ": " + songsID)
+        
+                    const model = {
+                        playlist: playlist,
+                        songsID: songsID
+                    }
+                    res.render("songs.hbs", model)
+                }
+            })
         }
     })
 })

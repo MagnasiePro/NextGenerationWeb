@@ -1,5 +1,3 @@
-{{log this}}
-
 <div class="is-flex is-justify-content-center columns is-1 is-multiline is-variable" style="margin: 1em 0;">
     <article class="is-flex is-justify-content-space-between is-flex-direction-column panel is-success"
         style="width:90vw">
@@ -26,7 +24,7 @@
                 </tr>
             </thead>
             <tbody>
-                {{#each songs}}
+                {{#each songs as |song songId|}}
                 <tr>
                     <td>{{Track_Name}}</td>
                     <td>{{Arists_Name}}</td>
@@ -49,10 +47,16 @@
                                         </p>
                                     </div>
                                     <hr class="dropdown-divider">
-                                    {{#each ../playlists}}
-                                    <button type="submit" class="dropdown-item add-to-playlist" style="border:none; background-color:transparent">
-                                    {{name}}
-                                    </button>
+                                    {{#each ../playlists as |playlist playlistId|}}
+                                    <form method="POST"
+                                        action="/songs/add-song-to-playlist">
+                                        <input type="hidden" name="idPlaylist" value={{playlist.id}} />
+                                        <input type="hidden" name="idSong" value={{song.id}} />
+                                        <button type="submit" class="dropdown-item add-to-playlist"
+                                            style="border:none; background-color:transparent">
+                                            {{name}}
+                                        </button>
+                                    </form>
                                     {{/each}}
                                 </div>
                             </div>

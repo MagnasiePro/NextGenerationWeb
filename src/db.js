@@ -6,7 +6,7 @@ db.run(`CREATE TABLE IF NOT EXISTS accounts(id INTEGER PRIMARY KEY, username TEX
 
 db.run(`CREATE TABLE IF NOT EXISTS playlists(id INTEGER PRIMARY KEY, ownerID TEXT, name TEXT, private INTEGER)`)
 
-db.run(`CREATE TABLE IF NOT EXISTS songs(id INTEGER PRIMARY KEY, name TEXT, artist TEXT)`)
+db.run(`CREATE TABLE IF NOT EXISTS songs(id INTEGER PRIMARY KEY, Arists_Name VARCHAR(56) NOT NULL, Track_Name VARCHAR(55) NOT NULL, Album_Name VARCHAR(86) NOT NULL, Length VARCHAR(16) NOT NULL)`)
 
 db.run(`CREATE TABLE IF NOT EXISTS playlist_songs(playlist_id INTEGER, song_id INTEGER)`)
 
@@ -24,7 +24,7 @@ exports.addSong = function (name, artist, callback) {
 	})
 }
 
-exports.addSongToPlaylist = function (idPlaylist, idSong) {
+exports.addSongToPlaylist = function (idPlaylist, idSong, callback) {
 	const query = "INSERT INTO playlist_songs (playlist_id, song_id) VALUES (?, ?)"
 	const values = [idPlaylist, idSong]
 
@@ -65,7 +65,7 @@ exports.getSongsFromPlaylist = function (idPlaylist, callback) {
 	const query = "SELECT song_id FROM playlist_songs WHERE playlist_id = ?"
 	const value = idPlaylist
 
-	db.all(query, value, function (error, songsID){
+	db.all(query, value, function (error, songsID) {
 		if (error) {
 			callback(error)
 		} else {

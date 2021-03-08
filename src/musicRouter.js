@@ -18,6 +18,16 @@ router.post('/add-song', (req, res) => {
 router.post('/add-song-to-playlist', (req, res) => {
     const data = req.body
 
+    console.log("Add song: " + data.idSong + " to playlist: " + data.idPlaylist)
+
+    db.addSongToPlaylist(data.idPlaylist, data.idSong, function (error) {
+        if (error) {
+            console.log(error)
+            return
+        } else {
+            res.redirect("/songs")
+        }
+    })
 
 })
 

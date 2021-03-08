@@ -49,6 +49,18 @@ exports.getPlaylistsById = function (idPlaylist, callback) {
 	})
 }
 
+exports.getPlaylistsByOwnerId = function (OwnerID, callback) {
+	const query = "SELECT * FROM playlists WHERE OwnerID = ?"
+
+	db.all(query, OwnerID, function (error, playlists) {
+		if (error) {
+			console.log(error)
+		} else {
+			callback(null, playlists)
+		}
+	})
+}
+
 exports.getSongsFromPlaylist = function (idPlaylist, callback) {
 	const query = "SELECT song_id FROM playlist_songs WHERE playlist_id = ?"
 	const value = idPlaylist

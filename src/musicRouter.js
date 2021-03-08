@@ -3,7 +3,7 @@ const db = require('./db')
 
 const router = express.Router()
 
-router.post('/add-music', (req, res) => {
+router.post('/add-song', (req, res) => {
     const data = req.body
 
     if (!data.name || !data.artist) {
@@ -15,12 +15,21 @@ router.post('/add-music', (req, res) => {
     }
 })
 
+router.post('/add-song-to-playlist', (req, res) => {
+    const data = req.body
+
+
+})
+
 router.get('/', (req, res) => {
-    db.getSongs(function (error, songs) {
-        const model = {
-            songs: songs
-        } 
-        res.render('songs.hbs', model)
+    db.getSongs(function (error, songs) {
+        db.getPlaylistsByOwnerId(req.session.userID, function (error, playlists) {
+            const model = {
+                songs: songs,
+                playlists: playlists
+            }
+            res.render('songs.hbs', model)
+        })
     })
 })
 

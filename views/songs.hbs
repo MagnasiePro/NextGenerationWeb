@@ -2,7 +2,7 @@
 
 <div class="is-flex is-justify-content-center columns is-1 is-multiline is-variable" style="margin: 1em 0;">
     <article class="is-flex is-justify-content-space-between is-flex-direction-column panel is-success"
-        style="width:50vw">
+        style="width:90vw">
         <p class="panel-heading">
             Songs
         </p>
@@ -14,6 +14,55 @@
                 </span>
             </p>
         </div>
+        {{#if session.userID}}
+        <table class="table is-striped">
+            <thead>
+                <tr style="background-color: black;">
+                    <th>TITLE</th>
+                    <th>ARTIST</th>
+                    <th>ALBUM</th>
+                    <th>LENGTH</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each songs}}
+                <tr>
+                    <td>{{Track_Name}}</td>
+                    <td>{{Arists_Name}}</td>
+                    <td>{{Album_Name}}</td>
+                    <td>{{Length}}</td>
+                    <td>
+                        <div class="dropdown is-right is-hoverable">
+                            <div class="dropdown-trigger">
+                                <a aria-haspopup="true" aria-controls="dropdown-menu2">
+                                    <span>+</span>
+                                    <span class="icon is-small">
+                                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="dropdown-menu" id="dropdown-menu2" role="menu">
+                                <div class="dropdown-content">
+                                    <div class="dropdown-item">
+                                        <p><strong>Playlists</strong>
+                                        </p>
+                                    </div>
+                                    <hr class="dropdown-divider">
+                                    {{#each ../playlists}}
+                                    <button type="submit" class="dropdown-item add-to-playlist" style="border:none; background-color:transparent">
+                                    {{name}}
+                                    </button>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{else}}
         <table class="table is-striped">
             <thead>
                 <tr style="background-color: black;">
@@ -34,5 +83,13 @@
                 {{/each}}
             </tbody>
         </table>
+        {{/if}}
     </article>
 </div>
+
+<style>
+    .add-to-playlist:hover {
+        background-color: darkgrey !important;
+        cursor: pointer;
+    }
+</style>

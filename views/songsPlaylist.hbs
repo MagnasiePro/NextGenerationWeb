@@ -1,9 +1,16 @@
 <div class="is-flex is-justify-content-center columns is-1 is-multiline is-variable" style="margin: 1em 0;">
     <article class="is-flex is-justify-content-space-between is-flex-direction-column panel is-success"
         style="width:90vw">
-        <p class="panel-heading">
+        <div class="panel-heading is-flex is-flex-direction-row is-justify-content-space-between">
             {{playlist.name}}
-        </p>
+            <form method="POST" action="/playlists/remove-playlist">
+                <input type="hidden" name="idPlaylist" value={{playlist.id}} />
+                <button type="submit" class="dropdown-item remove-to-playlist"
+                    style="color:#3273dc ; border:none; background-color:transparent; padding:unset">
+                    Remove
+                </button>
+            </form>
+        </div>
         {{#if session.userID}}
         <table class="table is-striped">
             <thead>
@@ -25,15 +32,14 @@
                     <td>
                         <div class="dropdown is-right is-hoverable">
                             <div class="dropdown-trigger">
-                                <form method="POST"
-                                        action="/songs/remove-song-to-playlist">
-                                        <input type="hidden" name="idPlaylist" value={{playlist_id}} />
-                                        <input type="hidden" name="idSong" value={{song.id}} />
-                                        <button type="submit" class="dropdown-item remove-to-playlist"
-                                            style="color:#3273dc ; border:none; background-color:transparent; padding:unset">
-                                            Remove
-                                        </button>
-                                    </form>
+                                <form method="POST" action="/songs/remove-song-to-playlist">
+                                    <input type="hidden" name="idPlaylist" value={{playlist_id}} />
+                                    <input type="hidden" name="idSong" value={{song.id}} />
+                                    <button type="submit" class="dropdown-item remove-to-playlist"
+                                        style="color:#3273dc ; border:none; background-color:transparent; padding:unset">
+                                        Remove
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </td>

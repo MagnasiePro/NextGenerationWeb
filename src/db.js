@@ -1,3 +1,4 @@
+const { query } = require('express')
 const sqlite = require('sqlite3')
 
 const db = new sqlite.Database("database.db")
@@ -96,6 +97,25 @@ exports.createPlaylist = function (ownerID, name, private, callback) {
 		} else {
 			console.log("Create new playlist: " + name + " " + ownerID + " " + private + " " + this.lastID)
 			callback(null, this.lastID)
+		}
+	})
+}
+
+exports.removePlaylist = function (id, callback) {
+	const queryPlaylist = "DELETE FROM playlists WHERE id = " + id
+	const querySongsPlaylist = "DELETE FROM playlist_songs WHERE playlist_id = " + id
+
+	db.all(queryPlaylist, function(error) {
+		if (error) {
+			callback(error)
+		} else {
+			db.all(querySongsPlaylist, function(error) {
+				if (error) {
+					callback(error)
+				} else {
+					callback(null)
+				}
+			})
 		}
 	})
 }

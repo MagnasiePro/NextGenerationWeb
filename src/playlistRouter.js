@@ -61,4 +61,17 @@ router.post("/submit-playlist", (req, res) => {
     }
 })
 
+router.post("/remove-playlist", (req, res) => {
+    const data = req.body
+
+    db.removePlaylist(data.idPlaylist, function(error) {
+        if (error) {
+            res.send(error)
+            console.log(error)
+        } else {
+            res.redirect("/playlists")
+        }
+    })
+})
+
 module.exports = router

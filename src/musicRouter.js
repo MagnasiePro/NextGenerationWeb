@@ -31,6 +31,21 @@ router.post('/add-song-to-playlist', (req, res) => {
 
 })
 
+router.post('/remove-song-to-playlist', (req, res) => {
+    const data = req.body
+
+    console.log("Remove song: " + data.idSong + " to playlist: " + data.idPlaylist)
+
+    db.removeSongToPlaylist(data.idPlaylist, data.idSong, function (error) {
+        if (error) {
+            console.log(error)
+            return
+        } else {
+            res.redirect(req.get('referer'));
+        }
+    })
+})
+
 router.get('/', (req, res) => {
     db.getSongs(function (error, songs) {
         db.getPlaylistsByOwnerId(req.session.userID, function (error, playlists) {

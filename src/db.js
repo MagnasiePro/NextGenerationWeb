@@ -37,6 +37,19 @@ exports.addSongToPlaylist = function (idPlaylist, idSong, callback) {
 	})
 }
 
+exports.removeSongToPlaylist = function (idPlaylist, idSong, callback) {
+	const query = "DELETE FROM playlist_songs WHERE (playlist_id, song_id) = (?, ?)"
+	const values = [idPlaylist, idSong]
+
+	db.run(query, values, function (error) {
+		if (error) {
+			callback(error)
+		} else {
+			callback(null)
+		}
+	})
+}
+
 exports.getPlaylistsById = function (idPlaylist, callback) {
 	const query = "SELECT * FROM playlists WHERE id = ?"
 
@@ -199,7 +212,6 @@ exports.deleteAccountById = function (accountId, callback) {
 			callback(null)
 		}
 	})
-
 }
 
 exports.updateAccountById = function (newUsername, newPassword, accountId, callback) {

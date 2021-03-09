@@ -62,15 +62,13 @@ exports.getPlaylistsByOwnerId = function (OwnerID, callback) {
 }
 
 exports.getSongsFromPlaylist = function (idPlaylist, callback) {
-	const query = "SELECT song_id FROM playlist_songs WHERE playlist_id = ?"
-	const value = idPlaylist
+	const query = "SELECT * FROM songs INNER JOIN playlist_songs ON songs.id = playlist_songs.song_id WHERE playlist_id = ?"
 
-	db.all(query, value, function (error, songsID) {
+	db.all(query, idPlaylist, function (error, songsList) {
 		if (error) {
 			callback(error)
 		} else {
-			console.log("Songs in playlist: " + songsID)
-			callback(null, songsID)
+			callback(null, songsList)
 		}
 	})
 }
@@ -106,7 +104,6 @@ exports.getPlaylists = function (userID, callback) {
 	const value = userID
 
 	db.all(query, value, function (error, playlists) {
-		console.log("UserID: " + value)
 		if (error) {
 			callback(error)
 		} else {

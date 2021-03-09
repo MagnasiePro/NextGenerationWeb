@@ -25,14 +25,14 @@ router.get('/:id/songs', (req, res) => {
             res.redirect("/playlists")
             return
         } else {
-            db.getSongsFromPlaylist(id, function (error, songsID) {
+            db.getSongsFromPlaylist(id, function (error, songs) {
                 if (error) {
-                    callback(error)
+                    console.log(error)
+                    res.send(error)
                 } else {
-                    console.log("Songs in playlists n°" + id + ": " + songsID)
                     const model = {
                         playlist: playlist,
-                        songsID: songsID
+                        songs: songs
                     }
                     res.render("songsPlaylist.hbs", model)
                 }

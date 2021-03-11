@@ -45,7 +45,7 @@ router.post('/submit-login', (req, res) => {
     } else {
         db.loginAccount(data.username, function (error, account) {
             bcrypt.compare(data.password, account.password, function (err, response) {
-                if (res) {
+                if (response) {
                     req.session.userID = account.id
                     res.redirect("/")
                 } else {

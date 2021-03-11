@@ -10,6 +10,7 @@ const accountsRouter = require('./src/accountsRouter')
 const signRouter = require('./src/signRouter')
 const playlistRouter = require('./src/playlistRouter')
 const musicRouter = require('./src/musicRouter')
+const apiRouter = require('./src/apiRouter')
 
 app.use(expressSession({
     secret: "ThisIsMySuperSecretPassword", //Promise you that it will not be this password for production
@@ -62,5 +63,6 @@ app.use("/playlists", playlistRouter)
 app.use("/login", signRouter)
 app.use("/accounts", accountsRouter)
 app.use("/songs", musicRouter)
+app.use("/api", apiRouter)
 
 app.listen(8080)

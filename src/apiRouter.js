@@ -50,8 +50,8 @@ router.get('/songs', (req, res) => {
 })
 
 router.get('/playlists', (req, res) => {
-    const data = req.headers
-    const [type, token] = data.authorization.split(' ')
+    const headers = req.headers
+    const [type, token] = headers.authorization.split(' ')
 
     if (type != "Bearer") {
         res.status(400).json({ "error": "bad_type" })
@@ -60,6 +60,7 @@ router.get('/playlists', (req, res) => {
         jwt.verify(token, "VerySecretKeyAccessToken", function (error, tokenContent) {
             db.getPlaylists(tokenContent.userID, function (error, playlists) {
                 if (error) {
+                    res.status(400).json(error)
                     console.log(error)
                 } else {
                     console.log("API: Requesting playlists")
@@ -72,8 +73,8 @@ router.get('/playlists', (req, res) => {
 
 router.get('/playlists/:id/songs', (req, res) => {
     const id = req.params.id
-    const data = req.headers
-    const [type, token] = data.authorization.split(' ')
+    const headers = req.headers
+    const [type, token] = headers.authorization.split(' ')
 
     if (type != "Bearer") {
         res.status(400).json({ "error": "bad_type" })
@@ -82,7 +83,7 @@ router.get('/playlists/:id/songs', (req, res) => {
         db.getPlaylistsById(id, function (error, playlist) {
             jwt.verify(token, "VerySecretKeyAccessToken", function (error, tokenContent) {
                 if (error || typeof playlist === 'undefined' || (playlist.private == 1 && playlist.ownerID != tokenContent.userID)) {
-                    res.status(400).json({"error": "bad_token_or_playlist_doesnt_exist"})
+                    res.status(400).json({ "error": "bad_token_or_playlist_doesnt_exist" })
                     return
                 } else {
                     db.getSongsFromPlaylist(id, function (error, songs) {
@@ -97,6 +98,32 @@ router.get('/playlists/:id/songs', (req, res) => {
                 }
             })
         })
+    }
+})
+
+router.post('/playlists/create', (req, res) => {
+    const headers = req.headers
+    const data = req.body
+    const [type, token] = headers.authorization.split(' ')
+
+    if (type != "Bearer") {
+        res.status(400).json({ "error": "bad_type" })
+        console.log("API: Bad type send")
+    } else {
+        if (!data.title || !data.isPublic) {
+            res.status(400).json({ "error": "bad_arguments" })
+            console.log("API: bad_arguments")
+        } else {
+            jwt.verify(token, "VerySecretKeyAccessToken", function (error, tokenContent) {
+                if (error) {
+                    res.status(400).json(error)
+                } else {
+                    db.createPlaylist(tokenContent.userID, data.title, data.isPublic == "true" ? 0 : 1, function (error) {
+                        res.status(201).json({ "success": true })
+                    })
+                }
+            })
+        }
     }
 })
 

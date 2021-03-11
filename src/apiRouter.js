@@ -49,6 +49,38 @@ router.get('/songs', (req, res) => {
     })
 })
 
+router.post('/songs/add_to_playlist', (req, res) => {
+    const headers = req.headers
+    const data = req.body
+    const [type, token] = headers.authorization.split(' ')
+
+    if (type != "Bearer") {
+        res.status(400).json({ "error": "bad_type" })
+        console.log("API: Bad type send")
+    } else {
+        if (!data.idSong || !data.idPlaylist) {
+            res.status(400).json({ "error": "bad_arguments" })
+            console.log("API: bad_arguments")
+        } else {
+            jwt.verify(token, "VerySecretKeyAccessToken", function (error, tokenContent) {
+                if (error) {
+                    res.status(400).json(error)
+                } else {
+                    db.addSongToPlaylist(data.idPlaylist, data.idSong, function (error) {
+                        if (error) {
+                            res.status(400).json(error)
+                            console.log(error)
+                        } else {
+                            res.status(201).json({ "success": true })
+                            console.log("API: Add song to a playlist")
+                        }
+                    })
+                }
+            })
+        }
+    }
+})
+
 router.get('/playlists', (req, res) => {
     const headers = req.headers
     const [type, token] = headers.authorization.split(' ')
@@ -146,11 +178,11 @@ router.post('/playlists/remove', (req, res) => {
                     res.status(400).json(error)
                     console.log(error)
                 } else {
-                    db.removePlaylist(data.playlistID, function(error) {
+                    db.removePlaylist(data.playlistID, function (error) {
                         if (error) {
                             res.status(400).json(error)
                         } else {
-                            res.status(201).json({"success": true})
+                            res.status(201).json({ "success": true })
                             console.log("API: Remove playlist")
                         }
                     })

@@ -70,4 +70,34 @@ router.get('/playlists', (req, res) => {
     }
 })
 
+router.get('/playlists/:id/songs', (req, res) => {
+    const id = req.params.id
+    const data = req.headers
+    const [type, token] = data.authorization.split(' ')
+
+    if (type != "Bearer") {
+        res.status(400).json({ "error": "bad_type" })
+        console.log("API: Bad type send")
+    } else {
+        db.getPlaylistsById(id, function (error, playlist) {
+            jwt.verify(token, "VerySecretKeyAccessToken", function (error, tokenContent) {
+                if (error || typeof playlist === 'undefined' || (playlist.private == 1 && playlist.ownerID != tokenContent.userID)) {
+                    res.status(400).json({"error": "bad_token_or_playlist_doesnt_exist"})
+                    return
+                } else {
+                    db.getSongsFromPlaylist(id, function (error, songs) {
+                        if (error) {
+                            console.log(error)
+                            res.status(500).json(error)
+                        } else {
+                            console.log("API: Request songs from playlist " + id)
+                            res.status(200).json(songs)
+                        }
+                    })
+                }
+            })
+        })
+    }
+})
+
 module.exports = router

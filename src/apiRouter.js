@@ -120,6 +120,39 @@ router.post('/playlists/create', (req, res) => {
                 } else {
                     db.createPlaylist(tokenContent.userID, data.title, data.isPublic == "true" ? 0 : 1, function (error) {
                         res.status(201).json({ "success": true })
+                        console.log("API: Create playlist")
+                    })
+                }
+            })
+        }
+    }
+})
+
+router.post('/playlists/remove', (req, res) => {
+    const headers = req.headers
+    const data = req.body
+    const [type, token] = headers.authorization.split(' ')
+
+    if (type != "Bearer") {
+        res.status(400).json({ "error": "bad_type" })
+        console.log("API: Bad type send")
+    } else {
+        if (!data.playlistID) {
+            res.status(400).json({ "error": "bad_arguments" })
+            console.log("API: bad_arguments")
+        } else {
+            jwt.verify(token, "VerySecretKeyAccessToken", function (error, tokenContent) {
+                if (error) {
+                    res.status(400).json(error)
+                    console.log(error)
+                } else {
+                    db.removePlaylist(data.playlistID, function(error) {
+                        if (error) {
+                            res.status(400).json(error)
+                        } else {
+                            res.status(201).json({"success": true})
+                            console.log("API: Remove playlist")
+                        }
                     })
                 }
             })

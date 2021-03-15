@@ -5,10 +5,10 @@ const router = express.Router()
 
 router.get('/', function (request, response) {
 
-    db.getAllAccounts(function(error, accounts){
-		
-		if(error){
-            console.log("ERROR: " + error)
+	db.getAllAccounts(function (error, accounts) {
+
+		if (error) {
+			console.log("ERROR: " + error)
 		} else {
 			const model = {
 				accounts: accounts
@@ -20,17 +20,23 @@ router.get('/', function (request, response) {
 })
 
 router.get('/:id', function (request, response) {
-     const id = request.params.id
+	const id = request.params.id
 
-    db.getAccountById(id, function(error, account){
-		
-		if(error){
-            console.log("ERROR: " + error)
-		}else{
-			const model = {
-				account: account
-			}
-			response.render("account.hbs", model)
+	db.getAccountById(id, function (error, account) {
+		if (error) {
+			console.log("ERROR: " + error)
+		} else {
+			db.getPublicPlaylistsByOwnerId(id, function (error, playlists) {
+				if (error) {
+					console.log("ERROR: " + error)
+				} else {
+					const model = {
+						account: account,
+						playlists: playlists
+					}
+					response.render("account.hbs", model)
+				}
+			})
 		}
 	})
 

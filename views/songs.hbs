@@ -4,14 +4,6 @@
         <p class="panel-heading">
             Songs
         </p>
-        <div class="panel-block">
-            <p class="control has-icons-left">
-                <input class="input is-success" type="text" placeholder="Search">
-                <span class="icon is-left">
-                    <i class="fas fa-search" aria-hidden="true"></i>
-                </span>
-            </p>
-        </div>
         {{#if session.userID}}
         <table class="table is-striped">
             <thead>
@@ -48,8 +40,7 @@
                                     </div>
                                     <hr class="dropdown-divider">
                                     {{#each ../playlists as |playlist playlistId|}}
-                                    <form method="POST"
-                                        action="/songs/add-song-to-playlist">
+                                    <form method="POST" action="/songs/add-song-to-playlist">
                                         <input type="hidden" name="idPlaylist" value={{playlist.id}} />
                                         <input type="hidden" name="idSong" value={{song.id}} />
                                         <button type="submit" class="dropdown-item add-to-playlist"

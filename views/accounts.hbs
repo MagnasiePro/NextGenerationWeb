@@ -1,23 +1,29 @@
-<h1>Accounts</h1>
-
-{{log this}}
+<h1 class="title" style="color: white">Accounts</h1>
 
 {{#if errorOcurred}}
-	<p>Internal server error, try again later!</p>
+<p>Internal server error, try again later!</p>
 {{else}}
-	
-	{{#if accounts.length}}
-	
-		<p>There are {{accounts.length}} accounts.</p>
-		
-		<ul>
-		{{#each accounts}}
-			<li><a href="/accounts/{{id}}">{{username}}</a></li>
-		{{/each}}
-		</ul>
-		
-	{{else}}
-		<p>There are no accounts.</p>
-	{{/if}}
-	
+
+{{#if accounts.length}}
+
+<div class="columns is-1 is-multiline is-variable" style="margin: 1em 0;">
+	{{#each accounts}}
+	<div class="column is-2">
+		<a href="/accounts/{{id}}/">
+			<div class="card" style="background-color: dimgrey;">
+				<div class="card-content">
+					<div class="content" style="color: white; text-align: center;">
+						{{username}}
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+	{{/each}}
+</div>
+
+{{else}}
+<p>There are no accounts.</p>
+{{/if}}
+
 {{/if}}

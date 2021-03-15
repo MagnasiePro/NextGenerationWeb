@@ -1,4 +1,4 @@
-<h1 class="title">Playlist</h1>
+<h1 class="title" style="color: white">Playlist</h1>
 
 {{#if session.userID}}
 <a class="button is-active" href="/playlists/newPlaylist">New Playlist</a>
@@ -17,15 +17,10 @@
                         </div>
                         <div class="media-content">
                             <p class="title is-4">{{name}}</p>
-                            <p class="subtitle is-6">{{ownerID}}</p>
+                            <p class="subtitle is-6">{{username}}</p>
                         </div>
                     </div>
                 </header>
-                <div class="card-content" style="color:lightgrey">
-                    <div class="content" style="color:;">
-                        {{private}}
-                    </div>
-                </div>
             </div>
         </a>
     </div>

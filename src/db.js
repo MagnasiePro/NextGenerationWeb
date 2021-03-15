@@ -64,7 +64,19 @@ exports.getPlaylistsById = function (idPlaylist, callback) {
 }
 
 exports.getPlaylistsByOwnerId = function (OwnerID, callback) {
-	const query = "SELECT * FROM playlists WHERE OwnerID = ?"
+	const query = "SELECT playlists.id, playlists.ownerID, playlists.name, playlists.private, accounts.username FROM playlists INNER JOIN accounts ON playlists.ownerID = accounts.id WHERE playlists.ownerID = ?"
+
+	db.all(query, OwnerID, function (error, playlists) {
+		if (error) {
+			console.log(error)
+		} else {
+			callback(null, playlists)
+		}
+	})
+}
+
+exports.getPublicPlaylistsByOwnerId = function (OwnerID, callback) {
+	const query = "SELECT * FROM playlists WHERE ownerID = ? AND private = 0"
 
 	db.all(query, OwnerID, function (error, playlists) {
 		if (error) {
@@ -133,7 +145,8 @@ exports.getSongs = function (callback) {
 }
 
 exports.getPlaylists = function (userID, callback) {
-	const query = "SELECT * FROM playlists WHERE private = 0 OR ownerID = ?"
+	// const query = "SELECT * FROM playlists WHERE private = 0 OR ownerID = ?"
+	const query = "SELECT playlists.id, playlists.ownerID, playlists.name, playlists.private, accounts.username FROM playlists INNER JOIN accounts ON playlists.ownerID = accounts.id WHERE private = 0 OR ownerID = ?"
 	const value = userID
 
 	db.all(query, value, function (error, playlists) {

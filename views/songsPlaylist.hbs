@@ -1,8 +1,10 @@
 <div class="is-flex is-justify-content-center columns is-1 is-multiline is-variable" style="margin: 1em 0;">
     <article class="is-flex is-justify-content-space-between is-flex-direction-column panel is-success"
         style="width:90vw">
+
         <div class="panel-heading is-flex is-flex-direction-row is-justify-content-space-between">
             {{playlist.name}}
+            {{#if connected}}
             <form method="POST" action="/playlists/remove-playlist">
                 <input type="hidden" name="idPlaylist" value={{playlist.id}} />
                 <button type="submit" class="dropdown-item remove-to-playlist"
@@ -10,8 +12,9 @@
                     Remove
                 </button>
             </form>
+            {{/if}}
         </div>
-        {{#if session.userID}}
+        {{#if connected}}
         <table class="table is-striped">
             <thead>
                 <tr style="background-color: black;">

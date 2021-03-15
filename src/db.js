@@ -3,9 +3,9 @@ const sqlite = require('sqlite3')
 
 const db = new sqlite.Database("database.db")
 
-db.run(`CREATE TABLE IF NOT EXISTS accounts(id INTEGER PRIMARY KEY, username TEXT, password INTEGER)`)
+db.run(`CREATE TABLE IF NOT EXISTS accounts(id INTEGER PRIMARY KEY, username TEXT, password TEXT)`)
 
-db.run(`CREATE TABLE IF NOT EXISTS playlists(id INTEGER PRIMARY KEY, ownerID TEXT, name TEXT, private INTEGER)`)
+db.run(`CREATE TABLE IF NOT EXISTS playlists(id INTEGER PRIMARY KEY, ownerID INTEGER, name TEXT, private INTEGER)`)
 
 db.run(`CREATE TABLE IF NOT EXISTS songs(id INTEGER PRIMARY KEY, Arists_Name VARCHAR(56) NOT NULL, Track_Name VARCHAR(55) NOT NULL, Album_Name VARCHAR(86) NOT NULL, Length VARCHAR(16) NOT NULL)`)
 

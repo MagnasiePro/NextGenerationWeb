@@ -32,7 +32,8 @@ router.get('/:id/songs', (req, res) => {
                 } else {
                     const model = {
                         playlist: playlist,
-                        songs: songs
+                        songs: songs,
+                        connected: req.session.userID === playlist.ownerID
                     }
                     res.render("songsPlaylist.hbs", model)
                 }

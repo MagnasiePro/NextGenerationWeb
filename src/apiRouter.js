@@ -49,6 +49,20 @@ router.get('/user', (req, res) => {
     })
 })
 
+router.get('/user/:id', (req, res) => {
+    const id = req.params.id
+
+    db.getAccountById(id, function(error, account){
+        if (error) {
+            res.status(500).json(error)
+            console.log(error)
+        } else {
+            res.status(200).json(account)
+            console.log("API: Requesting user")
+        }
+    })
+})
+
 router.get('/songs', (req, res) => {
     db.getSongs(function (error, songs) {
         if (error) {

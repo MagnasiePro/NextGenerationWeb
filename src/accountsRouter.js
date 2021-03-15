@@ -8,7 +8,6 @@ router.get('/', function (request, response) {
     db.getAllAccounts(function(error, accounts){
 		
 		if(error){
-			// TODO: Handle error.
             console.log("ERROR: " + error)
 		} else {
 			const model = {
@@ -22,10 +21,6 @@ router.get('/', function (request, response) {
 
 router.get('/:id', function (request, response) {
      const id = request.params.id
-    // const data = require('../scripts/dummy-data')
-
-    // console.log(data.accounts[id].username)
-    // response.render("account.hbs", {account: data.accounts[id]})
 
     db.getAccountById(id, function(error, account){
 		

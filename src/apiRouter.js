@@ -37,6 +37,18 @@ router.post('/tokens', (req, res) => {
     }
 })
 
+router.get('/user', (req, res) => {
+    db.getAllAccounts(function(error, accounts){
+        if (error) {
+            res.status(500).json(error)
+            console.log(error)
+        } else {
+            res.status(200).json(accounts)
+            console.log("API: Requesting users lists")
+        }
+    })
+})
+
 router.get('/songs', (req, res) => {
     db.getSongs(function (error, songs) {
         if (error) {

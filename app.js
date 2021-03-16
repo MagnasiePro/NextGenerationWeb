@@ -5,6 +5,7 @@ const SQLiteStore = require('connect-sqlite3')(expressSession)
 const bodyParser = require('body-parser')
 
 const app = express()
+const db = require('./src/db')
 
 const accountsRouter = require('./src/accountsRouter')
 const signRouter = require('./src/signRouter')
@@ -35,7 +36,16 @@ app.engine('hbs', expressHandlebars({
 }))
 
 app.get('/', function (request, response) {
-    response.render("home.hbs")
+    db.getPlaylists(request.session.userID, function (error, playlists) {
+        if (error) {
+            console.log(error)
+        } else {
+            const model = {
+                playlists: playlists
+            }
+            response.render("home.hbs", model)
+        }
+    })
 })
 
 app.get('/contact', function (request, response) {

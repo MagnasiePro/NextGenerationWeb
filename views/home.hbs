@@ -1,2 +1,91 @@
-<h1 class="title has-text-light	">Home!</h1>
-<p class="subtitle has-text-light">This is the home page!</p>
+<div id="main-div">
+    <div class="columns">
+        <div id="playlists-column" class="column">
+            {{#each playlists}}
+            <div id="playlist-element">
+                <a href="/playlists/{{id}}/songs">
+                    <div class="card" style="background-color: black; min-height: 10vh">
+                        <header class="card-header" style="color:white">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-48x48">
+                                        <img src="https://bulma.io/images/placeholders/96x96.png"
+                                            alt="Placeholder image">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4">{{name}}</p>
+                                    <p class="subtitle is-6">{{username}}</p>
+                                </div>
+                            </div>
+                        </header>
+                    </div>
+                </a>
+            </div>
+            {{/each}}
+        </div>
+        <div id="column-information" class="column">
+            <div class="card">
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-left">
+                            <figure class="image is-48x48">
+                                <img src="https://avatars.githubusercontent.com/u/34190754?s=460&u=8889cfd4e58b27e2a58785c567d32287aca39eff&v=4"
+                                    alt="Placeholder image">
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <p class="title is-4">NextGenerationWeb</p>
+                            <p class="subtitle is-6">by Camille Maurel</p>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        <p>NextGenerationWeb project is a Streaming plateform like Spotify and Deezer.</p>
+                        <cite>"As project work you will create a platform where users can create and share music
+                            playlists. Users will be able to create accounts, playlists and then add songs to their
+                            playlists. A playlist can be either private (only the user who created it can see it) or
+                            public (anyone can see it)."</cite>
+                        <br><br>
+                        <img src="https://wakatime.com/badge/github/MagnasiePro/NextGenerationWeb.svg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #main-div {
+        background: rgb(25, 20, 20);
+        background-image: linear-gradient(#c074b2, #8ab5e8);
+    }
+
+    #playlist-element {
+        margin: 10px 0;
+        width: 35vw;
+    }
+
+    .columns {
+        background: linear-gradient(to right, #ffffff00, #000000de 50%);
+        padding: 20px 50px;
+        min-height: 100vh;
+    }
+
+    #github-avatar {
+        border-radius: 50%;
+    }
+
+    .avatar {
+        display: inline-block;
+        overflow: hidden;
+        vertical-align: middle;
+        border-radius: 6px;
+        flex-shrink: 0;
+    }
+
+    #column-information {
+        display: flex;
+        flex-direction: column;
+    }
+</style>

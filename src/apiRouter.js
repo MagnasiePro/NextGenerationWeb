@@ -92,7 +92,7 @@ router.post('/songs/add_to_playlist', (req, res) => {
             res.status(400).json({ "error": "bad_arguments" })
             console.log("API: bad_arguments")
         } else {
-            db.getPlaylistsById(data.idPlaylist, function (error, playlist) {
+            db.getPlaylistsById(data.idPlaylist, tokenContent.userID, function (error, playlist) {
                 jwt.verify(token, "VerySecretKeyAccessToken", function (error, tokenContent) {
                     if (error || typeof playlist === 'undefined' || (playlist.private == 1 && playlist.ownerID != tokenContent.userID)) {
                         res.status(400).json(error)

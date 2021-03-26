@@ -50,10 +50,12 @@ exports.removeSongToPlaylist = function (idPlaylist, idSong, callback) {
 	})
 }
 
-exports.getPlaylistsById = function (idPlaylist, callback) {
-	const query = "SELECT * FROM playlists WHERE id = ?"
+exports.getPlaylistsById = function (idPlaylist, idUser, callback) {
+//	const query = "SELECT * FROM playlists WHERE id = ?"
+	const query = "SELECT * FROM playlists WHERE (id = ? AND private = 0) OR (id = ? AND ownerID = ?)"
+	const values = [idPlaylist, idPlaylist, idUser]
 
-	db.get(query, idPlaylist, function (error, playlist) {
+	db.get(query, values, function (error, playlist) {
 		if (error) {
 			console.log(error)
 		} else {

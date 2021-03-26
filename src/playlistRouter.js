@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
 router.get('/:id/songs', (req, res) => {
     const id = req.params.id
 
-    db.getPlaylistsById(id, function (error, playlist) {
+    db.getPlaylistsById(id, req.session.userID, function (error, playlist) {
         if (typeof playlist === 'undefined' || (playlist.private == 1 && playlist.ownerID != req.session.userID)) {
             res.redirect("/playlists")
             return

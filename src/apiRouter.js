@@ -11,25 +11,29 @@ router.post('/tokens', (req, res) => {
 
     if (req.body.grant_type == "password") {
         db.loginAccount(data.username, function (error, account) {
-            bcrypt.compare(data.password, account.password, function (err, response) {
-                if (response) {
-                    const payloadsTokenID = {
-                        "sub": account.id,
-                        "preferred_username": data.username,
-                    }
-                    const payloadsAccessToken = {
-                        "userID": account.id
-                    }
-                    const accessToken = jwt.sign(payloadsAccessToken, "VerySecretKeyAccessToken")
-                    const tokenID = jwt.sign(payloadsTokenID, "VerySecretKeyTokenID")
-                    console.log("API: Successfully generate tokens !")
-                    res.status(200).json({ "access_token": accessToken, "token_type": "Bearer", "id_token": tokenID })
+            if (error) {
+                res.status(400)
+            } else {
+                bcrypt.compare(data.password, account.password, function (err, response) {
+                    if (response) {
+                        const payloadsTokenID = {
+                            "sub": account.id,
+                            "preferred_username": data.username,
+                        }
+                        const payloadsAccessToken = {
+                            "userID": account.id
+                        }
+                        const accessToken = jwt.sign(payloadsAccessToken, "VerySecretKeyAccessToken")
+                        const tokenID = jwt.sign(payloadsTokenID, "VerySecretKeyTokenID")
+                        console.log("API: Successfully generate tokens !")
+                        res.status(200).json({ "access_token": accessToken, "token_type": "Bearer", "id_token": tokenID })
 
-                } else {
-                    res.status(400).json({ "error": "invalid_information" })
-                    console.log("API: Bad user information")
-                }
-            })
+                    } else {
+                        res.status(400).json({ "error": "invalid_information" })
+                        console.log("API: Bad user information")
+                    }
+                })
+            }
         })
     } else {
         res.status(400).json({ "error": "invalid_grant" })
@@ -38,7 +42,7 @@ router.post('/tokens', (req, res) => {
 })
 
 router.get('/user', (req, res) => {
-    db.getAllAccounts(function(error, accounts){
+    db.getAllAccounts(function (error, accounts) {
         if (error) {
             res.status(500).json(error)
             console.log(error)
@@ -52,7 +56,7 @@ router.get('/user', (req, res) => {
 router.get('/user/:id', (req, res) => {
     const id = req.params.id
 
-    db.getAccountById(id, function(error, account){
+    db.getAccountById(id, function (error, account) {
         if (error) {
             res.status(500).json(error)
             console.log(error)
@@ -152,15 +156,19 @@ router.get('/playlists', (req, res) => {
         console.log("API: Bad type send")
     } else {
         jwt.verify(token, "VerySecretKeyAccessToken", function (error, tokenContent) {
-            db.getPlaylists(tokenContent.userID, function (error, playlists) {
-                if (error) {
-                    res.status(400).json(error)
-                    console.log(error)
-                } else {
-                    console.log("API: Requesting playlists")
-                    res.status(200).json(playlists)
-                }
-            })
+            if (error) {
+                res.status(400)
+            } else {
+                db.getPlaylists(tokenContent.userID, function (error, playlists) {
+                    if (error) {
+                        res.status(400).json(error)
+                        console.log(error)
+                    } else {
+                        console.log("API: Requesting playlists")
+                        res.status(200).json(playlists)
+                    }
+                })
+            }
         })
     }
 })
@@ -175,22 +183,26 @@ router.get('/playlists/:id/songs', (req, res) => {
         console.log("API: Bad type send")
     } else {
         db.getPlaylistsById(id, function (error, playlist) {
-            jwt.verify(token, "VerySecretKeyAccessToken", function (error, tokenContent) {
-                if (error || typeof playlist === 'undefined' || (playlist.private == 1 && playlist.ownerID != tokenContent.userID)) {
-                    res.status(400).json({ "error": "bad_token_or_playlist_doesnt_exist" })
-                    return
-                } else {
-                    db.getSongsFromPlaylist(id, function (error, songs) {
-                        if (error) {
-                            console.log(error)
-                            res.status(500).json(error)
-                        } else {
-                            console.log("API: Request songs from playlist " + id)
-                            res.status(200).json(songs)
-                        }
-                    })
-                }
-            })
+            if (error) {
+                res.status(400)
+            } else {
+                jwt.verify(token, "VerySecretKeyAccessToken", function (error, tokenContent) {
+                    if (error || typeof playlist === 'undefined' || (playlist.private == 1 && playlist.ownerID != tokenContent.userID)) {
+                        res.status(400).json({ "error": "bad_token_or_playlist_doesnt_exist" })
+                        return
+                    } else {
+                        db.getSongsFromPlaylist(id, function (error, songs) {
+                            if (error) {
+                                console.log(error)
+                                res.status(500).json(error)
+                            } else {
+                                console.log("API: Request songs from playlist " + id)
+                                res.status(200).json(songs)
+                            }
+                        })
+                    }
+                })
+            }
         })
     }
 })

@@ -5,14 +5,35 @@
         <div class="panel-heading is-flex is-flex-direction-row is-justify-content-space-between">
             {{playlist.name}}
             {{#if connected}}
-            <form method="POST" action="/playlists/remove-playlist">
-                <input type="hidden" name="idPlaylist" value={{playlist.id}} />
-                <button type="submit" class="dropdown-item remove-to-playlist"
-                    style="color:#3273dc ; border:none; background-color:transparent; padding:unset">
-                    Remove
-                </button>
-            </form>
-            {{/if}}
+            <div style="display: flex; column-gap: 20px; justify-content: space-between;">
+                {{#if playlist.private}}
+                <form method="POST" action="/playlists/updatePlaylist">
+                    <input type="hidden" name="idPlaylist" value={{playlist.id}} />
+                    <input type="hidden" name="newStatus" value=0 />
+                    <button type="submit" class="dropdown-item remove-to-playlist"
+                        style="color:#3273dc ; border:none; background-color:transparent; padding:unset">
+                        Make Public
+                    </button>
+                </form>
+                {{else}}
+                <form method="POST" action="/playlists/updatePlaylist">
+                    <input type="hidden" name="idPlaylist" value={{playlist.id}} />
+                    <input type="hidden" name="newStatus" value=1 />
+                    <button type="submit" class="dropdown-item remove-to-playlist"
+                        style="color:#3273dc ; border:none; background-color:transparent; padding:unset">
+                        Make Private
+                    </button>
+                </form>
+                {{/if}}
+                <form method="POST" action="/playlists/remove-playlist">
+                    <input type="hidden" name="idPlaylist" value={{playlist.id}} />
+                    <button type="submit" class="dropdown-item remove-to-playlist"
+                        style="color:#3273dc ; border:none; background-color:transparent; padding:unset">
+                        Remove
+                    </button>
+                </form>
+                {{/if}}
+            </div>
         </div>
         {{#if connected}}
         <table class="table is-striped">

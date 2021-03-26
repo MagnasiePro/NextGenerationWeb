@@ -113,20 +113,34 @@ exports.createPlaylist = function (ownerID, name, private, callback) {
 }
 
 exports.removePlaylist = function (id, callback) {
-	const queryPlaylist = "DELETE FROM playlists WHERE id = " + id
-	const querySongsPlaylist = "DELETE FROM playlist_songs WHERE playlist_id = " + id
+	const queryPlaylist = "DELETE FROM playlists WHERE id = ?"
+	const querySongsPlaylist = "DELETE FROM playlist_songs WHERE playlist_id = ?"
+	const value = id
 
-	db.all(queryPlaylist, function(error) {
+	db.all(queryPlaylist, value, function(error) {
 		if (error) {
 			callback(error)
 		} else {
-			db.all(querySongsPlaylist, function(error) {
+			db.all(querySongsPlaylist, value, function(error) {
 				if (error) {
 					callback(error)
 				} else {
 					callback(null)
 				}
 			})
+		}
+	})
+}
+
+exports.updatePlaylistStatus = function (id, newStatus, callback) {
+	const query = "UPDATE playlists SET private = ? WHERE id = ?"
+	const values = [newStatus, id]
+
+	db.run(query, values,function (error) {
+		if (error) {
+			callback(error)
+		} else {
+			callback(null)
 		}
 	})
 }
@@ -144,7 +158,6 @@ exports.getSongs = function (callback) {
 }
 
 exports.getPlaylists = function (userID, callback) {
-	// const query = "SELECT * FROM playlists WHERE private = 0 OR ownerID = ?"
 	const query = "SELECT playlists.id, playlists.ownerID, playlists.name, playlists.private, accounts.username FROM playlists INNER JOIN accounts ON playlists.ownerID = accounts.id WHERE private = 0 OR ownerID = ?"
 	const value = userID
 

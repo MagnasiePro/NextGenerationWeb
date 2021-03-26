@@ -1,8 +1,8 @@
 const express = require('express')
 const expressHandlebars = require('express-handlebars')
 const expressSession = require('express-session')
-const SQLiteStore = require('connect-sqlite3')(expressSession)
 const bodyParser = require('body-parser')
+const path = require("path")
 
 const app = express()
 const db = require('./src/db')
@@ -12,6 +12,8 @@ const signRouter = require('./src/signRouter')
 const playlistRouter = require('./src/playlistRouter')
 const musicRouter = require('./src/musicRouter')
 const apiRouter = require('./src/apiRouter')
+
+app.use(express.static(path.join(__dirname + "/images")))
 
 app.use(expressSession({
     secret: "ThisIsMySuperSecretPassword", //Promise you that it will not be this password for production

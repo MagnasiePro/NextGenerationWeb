@@ -46,6 +46,18 @@ router.get('/newPlaylist', (req, res) => {
     res.render("newPlaylist.hbs")
 })
 
+router.post('/updatePlaylist', (req, res) => {
+    const {idPlaylist, newStatus} = req.body
+
+    db.updatePlaylistStatus(idPlaylist, newStatus, function (error) {
+        if (error) {
+            console.log(error)
+        } else {
+            res.redirect(req.get('referer'));
+        }
+    })
+})
+
 router.post("/submit-playlist", (req, res) => {
     const { name, isPrivate } = req.body
 

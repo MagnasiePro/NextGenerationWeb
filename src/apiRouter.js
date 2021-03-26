@@ -92,22 +92,26 @@ router.post('/songs/add_to_playlist', (req, res) => {
             res.status(400).json({ "error": "bad_arguments" })
             console.log("API: bad_arguments")
         } else {
-            db.getPlaylistsById(data.idPlaylist, tokenContent.userID, function (error, playlist) {
-                jwt.verify(token, "VerySecretKeyAccessToken", function (error, tokenContent) {
-                    if (error || typeof playlist === 'undefined' || (playlist.private == 1 && playlist.ownerID != tokenContent.userID)) {
-                        res.status(400).json(error)
-                    } else {
-                        db.addSongToPlaylist(data.idPlaylist, data.idSong, function (error) {
-                            if (error) {
-                                res.status(400).json(error)
-                                console.log(error)
-                            } else {
-                                res.status(201).json({ "success": true })
-                                console.log("API: Add song to a playlist")
-                            }
-                        })
-                    }
-                })
+            jwt.verify(token, "VerySecretKeyAccessToken", function (error, tokenContent) {
+                if (error) {
+                    res.status(400).json(error)
+                } else {
+                    db.getPlaylistsById(data.idPlaylist, tokenContent.userID, function (error, playlist) {
+                        if (error || typeof playlist === 'undefined') {
+                            res.status(400).json({ "error": "bad_token_or_playlist_doesnt_exist" })
+                        } else {
+                            db.addSongToPlaylist(data.idPlaylist, data.idSong, function (error) {
+                                if (error) {
+                                    res.status(400).json(error)
+                                    console.log(error)
+                                } else {
+                                    res.status(201).json({ "success": true })
+                                    console.log("API: Add song to a playlist")
+                                }
+                            })
+                        }
+                    })
+                }
             })
         }
     }
@@ -126,22 +130,27 @@ router.post('/songs/remove_from_playlist', (req, res) => {
             res.status(400).json({ "error": "bad_arguments" })
             console.log("API: bad_arguments")
         } else {
-            db.getPlaylistsById(data.idPlaylist, function (error, playlist) {
-                jwt.verify(token, "VerySecretKeyAccessToken", function (error, tokenContent) {
-                    if (error || typeof playlist === 'undefined' || (playlist.private == 1 && playlist.ownerID != tokenContent.userID)) {
-                        res.status(400).json(error)
-                    } else {
-                        db.removeSongToPlaylist(data.idPlaylist, data.idSong, function (error) {
-                            if (error) {
-                                res.status(400).json(error)
-                                console.log(error)
-                            } else {
-                                res.status(201).json({ "success": true })
-                                console.log("API: Remove song from a playlist")
-                            }
-                        })
-                    }
-                })
+            jwt.verify(token, "VerySecretKeyAccessToken", function (error, tokenContent) {
+                if (error) {
+                    console.log(error)
+                    res.status(400).json(error)
+                } else {
+                    db.getPlaylistsById(data.idPlaylist, tokenContent.userID, function (error, playlist) {
+                        if (error || typeof playlist === 'undefined') {
+                            res.status(400).json({ "error": "bad_token_or_playlist_doesnt_exist" })
+                        } else {
+                            db.removeSongToPlaylist(data.idPlaylist, data.idSong, function (error) {
+                                if (error) {
+                                    res.status(400).json(error)
+                                    console.log(error)
+                                } else {
+                                    res.status(201).json({ "success": true })
+                                    console.log("API: Remove song from a playlist")
+                                }
+                            })
+                        }
+                    })
+                }
             })
         }
     }
@@ -182,12 +191,12 @@ router.get('/playlists/:id/songs', (req, res) => {
         res.status(400).json({ "error": "bad_type" })
         console.log("API: Bad type send")
     } else {
-        db.getPlaylistsById(id, function (error, playlist) {
+        jwt.verify(token, "VerySecretKeyAccessToken", function (error, tokenContent) {
             if (error) {
                 res.status(400)
             } else {
-                jwt.verify(token, "VerySecretKeyAccessToken", function (error, tokenContent) {
-                    if (error || typeof playlist === 'undefined' || (playlist.private == 1 && playlist.ownerID != tokenContent.userID)) {
+                db.getPlaylistsById(id, tokenContent.userID, function (error, playlist) {
+                    if (error || typeof playlist === 'undefined') {
                         res.status(400).json({ "error": "bad_token_or_playlist_doesnt_exist" })
                         return
                     } else {

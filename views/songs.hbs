@@ -42,7 +42,7 @@
                                     {{#each ../playlists as |playlist playlistId|}}
                                     <form method="POST" action="/songs/add-song-to-playlist">
                                         <input type="hidden" name="idPlaylist" value={{playlist.id}} />
-                                        <input type="hidden" name="idSong" value={{song.id}} />
+                                        <input type="hidden" name="idSong" value={{song.class}} />
                                         <button type="submit" class="dropdown-item add-to-playlist"
                                             style="border:none; background-color:transparent">
                                             {{name}}

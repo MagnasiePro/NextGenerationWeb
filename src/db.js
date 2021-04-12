@@ -10,20 +10,6 @@ db.run(`CREATE TABLE IF NOT EXISTS songs(id INTEGER PRIMARY KEY, Arists_Name VAR
 
 db.run(`CREATE TABLE IF NOT EXISTS playlist_songs(playlist_id INTEGER, song_id INTEGER)`)
 
-exports.addSong = function (name, artist, callback) {
-	const query = "INSERT INTO songs (name, artist) VALUES (?, ?)"
-	const values = [name, artist]
-
-	db.run(query, values, function (error) {
-		if (error) {
-			callback(error)
-		} else {
-			console.log("Add new song: " + name + " - " + artist + " | id: " + this.lastID)
-			callback(null, this.lastID)
-		}
-	})
-}
-
 exports.addSongToPlaylist = function (idPlaylist, idSong, callback) {
 	const query = "INSERT INTO playlist_songs (playlist_id, song_id) VALUES (?, ?)"
 	const values = [idPlaylist, idSong]
@@ -51,7 +37,6 @@ exports.removeSongToPlaylist = function (idPlaylist, idSong, callback) {
 }
 
 exports.getPlaylistsById = function (idPlaylist, idUser, callback) {
-//	const query = "SELECT * FROM playlists WHERE id = ?"
 	const query = "SELECT * FROM playlists WHERE (id = ? AND private = 0) OR (id = ? AND ownerID = ?)"
 	const values = [idPlaylist, idPlaylist, idUser]
 
@@ -88,6 +73,7 @@ exports.getPublicPlaylistsByOwnerId = function (OwnerID, callback) {
 	})
 }
 
+//TODO Change db songs to RDF songs
 exports.getSongsFromPlaylist = function (idPlaylist, callback) {
 	const query = "SELECT * FROM songs INNER JOIN playlist_songs ON songs.id = playlist_songs.song_id WHERE playlist_id = ?"
 
@@ -143,18 +129,6 @@ exports.updatePlaylistStatus = function (id, newStatus, callback) {
 			callback(error)
 		} else {
 			callback(null)
-		}
-	})
-}
-
-exports.getSongs = function (callback) {
-	const query = "SELECT * FROM songs"
-
-	db.all(query, function (error, songs) {
-		if (error) {
-			callback(error)
-		} else {
-			callback(null, songs)
 		}
 	})
 }

@@ -106,3 +106,5 @@ dist
 # Debug file
 *.sql
 .DS_Store
+
+test/

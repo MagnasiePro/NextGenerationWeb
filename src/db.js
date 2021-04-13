@@ -73,15 +73,14 @@ exports.getPublicPlaylistsByOwnerId = function (OwnerID, callback) {
 	})
 }
 
-//TODO Change db songs to RDF songs
 exports.getSongsFromPlaylist = function (idPlaylist, callback) {
-	const query = "SELECT * FROM songs INNER JOIN playlist_songs ON songs.id = playlist_songs.song_id WHERE playlist_id = ?"
+	const query = "SELECT song_id FROM playlist_songs WHERE playlist_id = ?"
 
-	db.all(query, idPlaylist, function (error, songsList) {
+	db.all(query, idPlaylist, function (error, songsListID) {
 		if (error) {
 			callback(error)
 		} else {
-			callback(null, songsList)
+			callback(null, songsListID)
 		}
 	})
 }

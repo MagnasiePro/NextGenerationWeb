@@ -1,6 +1,7 @@
 const { request } = require('express')
 const express = require('express')
 const db = require('./db')
+const sparql = require('./sparql')
 
 const router = express.Router()
 
@@ -25,7 +26,7 @@ router.get('/:id/songs', (req, res) => {
             res.redirect("/playlists")
             return
         } else {
-            db.getSongsFromPlaylist(id, function (error, songs) {
+            sparql.getSongsFromPlaylist(id, function (error, songs) {
                 if (error) {
                     console.log(error)
                     res.send(error)

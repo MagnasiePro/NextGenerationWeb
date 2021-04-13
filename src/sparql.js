@@ -1,4 +1,5 @@
 const { EnapsoGraphDBClient } = require('@innotrade/enapso-graphdb-client');
+const db = require('./db')
 
 // connection data to the running GraphDB instance
 const GRAPHDB_BASE_URL = 'http://localhost:7200',
@@ -39,10 +40,15 @@ graphDBEndpoint
     });
 
 //TODO
-exports.getSongsFromPlaylist = function (songsID, callback) {
-    const query = `select * 
+exports.getSongsFromPlaylist = function (playlistID, callback) {
+    console.log("Get Playlist: " + playlistID)
+    db.getSongsFromPlaylist(playlistID, function (error, songsListID) {
+        if (error) {
+            console.log(error)
+        } else {
+            const query = `select * 
     where {
-        values ?id { "${songsID.join('" "')}" }
+        values ?id { "${songsListID.map(e => e.song_id).join('" "')}" }
         ?class a ont:Song ;
             sch:name ?name ;
             sch:identifier ?id;
@@ -52,15 +58,22 @@ exports.getSongsFromPlaylist = function (songsID, callback) {
             sch:thumbnailUrl ?thumbnailUrl .
     }`
 
-    graphDBEndpoint
-        .query(query, { transform: 'toJSON' })
-        .then((result) => {
-            callback(null, result.records)
-        })
-        .catch((err) => {
-            console.log(err)
-            callback(err)
-        });
+            graphDBEndpoint
+                .query(query, { transform: 'toJSON' })
+                .then((result) => {
+                    result.records.forEach(element => {
+                        var date = new Date(0);
+                        date.setMilliseconds(element.duration);
+                        element.duration = date.toISOString().substr(11, 8);
+                    });
+                    callback(null, result.records)
+                })
+                .catch((err) => {
+                    console.log(err)
+                    callback(err)
+                });
+        }
+    })
 }
 
 exports.getSongs = function (callback) {
@@ -78,6 +91,11 @@ exports.getSongs = function (callback) {
     graphDBEndpoint
         .query(query, { transform: 'toJSON' })
         .then((result) => {
+            result.records.forEach(element => {
+                var date = new Date(0);
+                date.setMilliseconds(element.duration);
+                element.duration = date.toISOString().substr(11, 8);
+            });
             callback(null, result.records)
         })
         .catch((err) => {

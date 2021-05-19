@@ -1,0 +1,17 @@
+<h1 class="title" style="color: green;">{{name}}</h1>
+<h2 style="font-size: 20px ;color: aliceblue;">This part has been received by the endpoint <a href="http://dbtune.org/magnatune/sparql/">http://dbtune.org/magnatune/sparql/</a></h2>
+
+{{#if songInfo.title}}
+<p>Title: {{songInfo.title.value}}</p>
+<p>Artist: {{songInfo.artistName.value}}</p>
+<p>Date: {{songInfo.date.value}}</p>
+<p>You can listen the sound at <a href="{{songInfo.sound.value}}">{{songInfo.sound.value}}</a></p>
+{{else}}
+<p>No info can be found on Magnatune for this music</p>
+{{/if}}
+
+<style>
+    p {
+        color: white;
+    }
+</style>

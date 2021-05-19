@@ -48,8 +48,10 @@
             </thead>
             <tbody>
                 {{#each songs as |song songId|}}
+
                 <tr>
-                    <td>{{name}}</td>
+                    <td> <a href="/songs/track?name={{name}}&artist={{artist}}&date={{date}}">
+                            {{name}}</a></td>
                     <td>{{artist}}</td>
                     <td>{{album}}</td>
                     <td>{{duration}}</td>
@@ -57,7 +59,7 @@
                         <div class="dropdown is-right is-hoverable">
                             <div class="dropdown-trigger">
                                 <form method="POST" action="/songs/remove-song-to-playlist">
-                                    <input type="hidden" name="idPlaylist" value={{playlist_id}} />
+                                    <input type="hidden" name="idPlaylist" value={{../playlist.id}} />
                                     <input type="hidden" name="idSong" value={{song.id}} />
                                     <button type="submit" class="dropdown-item remove-to-playlist"
                                         style="color:#3273dc ; border:none; background-color:transparent; padding:unset">
@@ -84,7 +86,8 @@
             <tbody>
                 {{#each songs}}
                 <tr>
-                    <td>{{name}}</td>
+                    <td> <a href="/songs/track?name={{name}}&artist={{artist}}&date={{date}}">
+                            {{name}}</a></td>
                     <td>{{artist}}</td>
                     <td>{{album}}</td>
                     <td>{{duration}}</td>

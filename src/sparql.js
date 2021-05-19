@@ -1,5 +1,9 @@
 const { EnapsoGraphDBClient } = require('@innotrade/enapso-graphdb-client');
 const db = require('./db')
+const ParsingClient = require('sparql-http-client/ParsingClient')
+const endpointUrl = 'http://dbtune.org/magnatune/sparql/'
+const client = new ParsingClient({ endpointUrl })
+
 
 // connection data to the running GraphDB instance
 const GRAPHDB_BASE_URL = 'http://localhost:7200',
@@ -39,20 +43,20 @@ graphDBEndpoint
         console.log(err);
     });
 
-//TODO
 exports.getSongsFromPlaylist = function (playlistID, callback) {
     console.log("Get Playlist: " + playlistID)
     db.getSongsFromPlaylist(playlistID, function (error, songsListID) {
         if (error) {
             console.log(error)
         } else {
-            const query = `select * 
+            var query = `select * 
     where {
-        values ?id { "${songsListID.map(e => e.song_id).join('" "')}" }
+        values ?id {"${songsListID.length == 1 ? songsListID[0].song_id : songsListID.map(e => e.song_id).join('" "')}"}
         ?class a ont:Song ;
             sch:name ?name ;
             sch:identifier ?id;
             sch:byArtist ?artist ;
+            sch:datePublished ?date ;
             sch:duration ?duration ;
             sch:inAlbum ?album ;
             sch:thumbnailUrl ?thumbnailUrl .
@@ -83,6 +87,7 @@ exports.getSongs = function (callback) {
             sch:name ?name ;
             sch:identifier ?id;
             sch:byArtist ?artist ;
+            sch:datePublished ?date ;
             sch:duration ?duration ;
             sch:inAlbum ?album ;
             sch:thumbnailUrl ?thumbnailUrl .
@@ -102,4 +107,35 @@ exports.getSongs = function (callback) {
             console.log(err)
             callback(err)
         });
+}
+
+exports.getMoreTrackInfo = async function (title, artist, callback) {
+    const query = `
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX dbpedia2: <http://dbpedia.org/property/>
+PREFIX dbpedia: <http://dbpedia.org/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX ns1: <http://purl.org/ontology/mo/>
+    
+SELECT DISTINCT ?instance ?title ?artistName ?date ?sound
+WHERE {
+    values ?title {"${title}"}
+    values ?artistName {"${artist}"}
+    ?instance a <http://purl.org/ontology/mo/Track> ;
+        dc:title ?title ;
+        foaf:maker ?artist ;
+        dc:created ?date ;
+        ns1:available_as ?sound .
+    ?artist foaf:name ?artistName
+}
+`
+
+    client.query.select(query).then(bindings => {
+        callback(bindings, null)
+    })
 }

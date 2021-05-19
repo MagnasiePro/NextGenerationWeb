@@ -55,4 +55,15 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/track', (req, res) => {
+
+    sparql.getMoreTrackInfo(req.query.name, req.query.artist, function (songInfo, error) {
+        const model = {
+            name: req.query.name,
+            songInfo: songInfo[0]
+        }
+        res.render('track.hbs', model)
+    })
+})
+
 module.exports = router
